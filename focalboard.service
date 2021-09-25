@@ -1,0 +1,31 @@
+[Unit]
+Description=Focalboard server
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5s
+ExecStart=/opt/focalboard/bin/focalboard-server
+WorkingDirectory=/opt/focalboard
+User=focalboard
+Group=focalboard
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+DevicePolicy=closed
+ProtectSystem=strict
+ProtectHome=read-only
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+MemoryDenyWriteExecute=yes
+LockPersonality=yes
+ReadWritePaths=/opt/focalboard-tmp
+
+[Install]
+WantedBy=multi-user.target
