@@ -1,0 +1,39 @@
+version: "3"
+services:
+  app:
+    image: mattermost/focalboard
+    container_name: focalboard
+    environment:
+      - VIRTUAL_HOST=focalboard.local
+      - VIRTUAL_PORT=8000
+    volumes:
+      - "./config.json:/opt/focalboard/config.json"
+    networks:
+      - isolated
+  relay:
+    container_name: focalboard-relay
+    image: "losfair/jftp:0.1.0"
+    ports:
+      - "3829:3000"
+    links:
+      - "app:fb"
+    environment:
+      JFTP_CONNECT: "fb:8000"
+    networks:
+      - isolated
+      - default
+
+networks:
+  isolated:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.25.3.16/29
+          gateway: 172.25.3.17
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.3.8/29
+          gateway: 172.25.3.9

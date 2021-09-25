@@ -92,3 +92,13 @@ networks:
   isolated:
     driver: bridge
     internal: true
+    ipam:
+      config:
+        - subnet: 172.25.3.32/29
+          gateway: 172.25.3.33
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.3.24/29
+          gateway: 172.25.3.25
