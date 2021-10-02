@@ -1,0 +1,39 @@
+version: "3"
+services:
+  app:
+    image: "ddvk/rmfakecloud:latest"
+    runtime: runsc
+    environment:
+      JWT_SECRET_KEY: # put your secret key here
+      DATADIR: /data
+      STORAGE_URL: https://rm.app.invariant.cn
+    volumes:
+      - "./data:/data"
+    networks:
+      - isolated
+  relay:
+    image: "losfair/jftp:0.1.0"
+    ports:
+      - "2192:3000"
+    links:
+      - "app:backend"
+    environment:
+      JFTP_CONNECT: "backend:3000"
+    networks:
+      - isolated
+      - default
+
+networks:
+  isolated:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.25.3.80/29
+          gateway: 172.25.3.81
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.3.72/29
+          gateway: 172.25.3.73

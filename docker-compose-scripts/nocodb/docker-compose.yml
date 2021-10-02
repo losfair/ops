@@ -1,0 +1,37 @@
+version: '3.3'
+
+services:
+  nocodb:
+    image: nocodb/nocodb:0.11.40
+    restart: always
+    runtime: runsc
+    environment:
+      NC_DB: "mysql2://172.17.0.1:3306?u=nocodb&p=put_your_password_here&d=nocodb"
+    networks:
+      - isolated
+  relay:
+    image: "losfair/jftp:0.1.0"
+    ports:
+      - "3083:3000"
+    links:
+      - "nocodb:backend"
+    environment:
+      JFTP_CONNECT: "backend:8080"
+    networks:
+      - isolated
+      - default
+
+networks:
+  isolated:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.25.3.64/29
+          gateway: 172.25.3.65
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.3.56/29
+          gateway: 172.25.3.57
