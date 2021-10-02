@@ -6,7 +6,7 @@ services:
     environment:
       JWT_SECRET_KEY: # put your secret key here
       DATADIR: /data
-      STORAGE_URL: https://rm.app.invariant.cn
+      STORAGE_URL: https://local.remarkable.com
     volumes:
       - "./data:/data"
     networks:

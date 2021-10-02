@@ -1,0 +1,42 @@
+(rmp) {
+    reverse_proxy https://rm.app.invariant.cn {
+        header_up Host "rm.app.invariant.cn"
+    }
+}
+
+*.appspot.com {
+    bind 127.0.0.1
+    tls /home/root/fakecerts/appspot/server_cert.pem /home/root/fakecerts/appspot/server_key.pem
+    import rmp
+#    log {
+#        output file /home/root/caddy_log/appspot.log
+#        format json
+#    }
+}
+
+*.remarkable.com {
+    bind 127.0.0.1
+    tls /home/root/fakecerts/remarkable.com/server_cert.pem /home/root/fakecerts/remarkable.com/server_key.pem
+    import rmp
+#    log {
+#        output file /home/root/caddy_log/remarkable_x.log
+#        format json
+#    }
+}
+
+internal.cloud.remarkable.com {
+    bind 127.0.0.1
+    tls /home/root/fakecerts/internal.cloud.remarkable.com/server_cert.pem /home/root/fakecerts/internal.cloud.remarkable.com/server_key.pem
+    import rmp
+#    log {
+#        output file /home/root/caddy_log/remarkable_internal_cloud.log
+#        format json
+#    }
+}
+
+# "SSL handshake failed" when connecting directly
+local.remarkable.com {
+    bind 127.0.0.1
+    tls /home/root/fakecerts/remarkable.com/server_cert.pem /home/root/fakecerts/remarkable.com/server_key.pem
+    import rmp
+}
