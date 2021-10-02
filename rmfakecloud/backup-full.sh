@@ -12,6 +12,10 @@ mkdir -p "$workdir/"
 cd "$datadir"
 tar c . | zstd > "$workdir/$outname"
 ls -lash "$workdir/$outname"
-sudo -u infra-backup aws s3 cp "$workdir/$outname" "s3://infra-backup.s3.univalent.net/apphost/rmfakecloud/$outname"
+sudo -u infra-backup \
+  aws s3 cp \
+    --storage-class GLACIER \
+    "$workdir/$outname" \
+    "s3://infra-backup.s3.univalent.net/apphost/rmfakecloud/$outname"
 rm "$workdir/$outname"
 echo "rmfakecloud data backup completed"
