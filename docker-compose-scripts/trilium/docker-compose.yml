@@ -1,0 +1,37 @@
+version: "3"
+services:
+  app:
+    image: "zadam/trilium:0.47.7"
+    container_name: trilium
+    user: root
+    volumes:
+      - "./data:/root/trilium-data"
+    networks:
+      - isolated
+  relay:
+    container_name: trilium-relay
+    image: "losfair/jftp:0.1.0"
+    ports:
+      - "4318:3000"
+    links:
+      - "app:backend"
+    environment:
+      JFTP_CONNECT: "backend:8080"
+    networks:
+      - isolated
+      - default
+
+networks:
+  isolated:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.25.3.48/29
+          gateway: 172.25.3.49
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.3.40/29
+          gateway: 172.25.3.41
