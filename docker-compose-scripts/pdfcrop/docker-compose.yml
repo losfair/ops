@@ -1,0 +1,32 @@
+version: "3"
+services:
+  prepare:
+    image: alpine:latest
+    restart: "no"
+    command: chown 1000:1000 /tmp/app
+    volumes:
+      - "ipc:/tmp/app"
+  app:
+    image: losfair/pdfcrop:0.1.0-2
+    user: node
+    depends_on:
+      - prepare
+    # Use `docker-compose --compatibility up -d`
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+    network_mode: "none"
+    volumes:
+      - "ipc:/tmp/app"
+  relay:
+    image: "losfair/jftp:0.1.1"
+    ports:
+      - "1891:3000"
+    volumes:
+      - "ipc:/tmp/app"
+    environment:
+      JFTP_CONNECT: "unix:/tmp/app/service.sock"
+volumes:
+  ipc:
