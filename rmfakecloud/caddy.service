@@ -1,0 +1,8 @@
+[Unit]
+After=home.mount
+
+[Service]
+ExecStart=/home/root/caddy run -config /home/root/Caddyfile
+
+[Install]
+WantedBy=multi-user.target

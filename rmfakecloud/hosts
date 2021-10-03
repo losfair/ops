@@ -1,0 +1,19 @@
+127.0.0.1 hwr-production-dot-remarkable-production.appspot.com
+127.0.0.1 service-manager-production-dot-remarkable-production.appspot.com
+127.0.0.1 local.appspot.com
+127.0.0.1 my.remarkable.com
+127.0.0.1 ping.remarkable.com
+127.0.0.1 internal.cloud.remarkable.com
+127.0.0.1 local.remarkable.com
+
+# time-b-b.nist.gov
+132.163.96.2 time1.google.com
+
+# time-e-b.nist.gov
+132.163.96.6 time2.google.com
+
+# time-a-wwv.nist.gov
+132.163.97.1 time3.google.com
+
+# time-c-g.nist.gov
+129.6.15.30 time4.google.com
