@@ -4,6 +4,7 @@ services:
     image: alpine:latest
     restart: "no"
     command: chown 1000:1000 /tmp/app
+    network_mode: none
     volumes:
       - "ipc:/tmp/app"
   app:
@@ -17,7 +18,7 @@ services:
         limits:
           cpus: "1"
           memory: 512M
-    network_mode: "none"
+    network_mode: none
     volumes:
       - "ipc:/tmp/app"
   relay:
@@ -26,6 +27,7 @@ services:
       - "1891:3000"
     volumes:
       - "ipc:/tmp/app"
+    network_mode: bridge
     environment:
       JFTP_CONNECT: "unix:/tmp/app/service.sock"
 volumes:
