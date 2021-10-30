@@ -18,6 +18,6 @@ procname="/usr/local/bin/ss-local"
 pidfile="/var/run/$name.pid"
 required_files="${ss_local_config}"
 
-command_args="-S -p $pidfile /usr/local/bin/ss-local -c $ss_local_config"
+command_args="-S -p $pidfile -r /usr/local/bin/ss-local -c $ss_local_config"
 
 run_rc_command "$1"
