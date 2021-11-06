@@ -4,7 +4,7 @@ create table `logstream_queue` (
 engine = Kafka()
 settings
   kafka_broker_list = '100.99.11.35:9093',
-  kafka_topic_list = 'net.univalent.caddy-log.app,net.univalent.caddy-log.lab',
+  kafka_topic_list = 'net.univalent.caddy-log.app,net.univalent.caddy-log.lab,net.univalent.caddy-log.invariant-cn',
   kafka_group_name = 'net.univalent.lab.clickhouse',
   kafka_format = 'LineAsString';
 
