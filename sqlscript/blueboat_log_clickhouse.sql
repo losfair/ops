@@ -49,7 +49,7 @@ select
   JSONExtract(raw, 'time', 'Array(Int64)') as raw_time,
   fromUnixTimestamp64Milli(cast(
     dateAdd(second, raw_time[3],
-      dateAdd(day, raw_time[2],
+      dateAdd(day, raw_time[2] - 1,
         toDate(concat(toString(raw_time[1]), '-01-01'))
       )
     ) as Int64
@@ -66,7 +66,7 @@ select
   JSONExtract(raw, 'time', 'Array(Int64)') as raw_time,
   fromUnixTimestamp64Milli(cast(
     dateAdd(second, raw_time[3],
-      dateAdd(day, raw_time[2],
+      dateAdd(day, raw_time[2] - 1,
         toDate(concat(toString(raw_time[1]), '-01-01'))
       )
     ) as Int64
