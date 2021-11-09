@@ -1,3 +1,5 @@
+use caddy_analytics;
+
 create table `logstream_queue` (
   `raw` String
 )
@@ -7,17 +9,6 @@ settings
   kafka_topic_list = 'net.univalent.caddy-log.app,net.univalent.caddy-log.lab,net.univalent.caddy-log.invariant-cn',
   kafka_group_name = 'net.univalent.lab.clickhouse',
   kafka_format = 'LineAsString';
-
-create table `logstream_rawdata`  (
-  `ts` DateTime64(3),
-  `raw` String
-)
-engine = MergeTree()
-order by `ts`
-partition by toYYYYMMDD(ts);
-
-create materialized view `logstream_rawdata_consumer` to `logstream_rawdata` as
-  select fromUnixTimestamp64Milli(toInt64(JSONExtractFloat(`raw`, 'ts') * 1000)) as ts, `raw` from `logstream_queue`;
 
 create table logstream_requests (
   `ts` DateTime64(3),
@@ -75,6 +66,7 @@ create view logstream_requestinfo as
     tupleElement(arrayFirst(x -> tupleElement(x, 1) = 'Referer', req_headers), 2)[1] as referrer,
     tupleElement(arrayFirst(x -> tupleElement(x, 1) = 'Origin', req_headers), 2)[1] as origin,
     tupleElement(arrayFirst(x -> tupleElement(x, 1) = 'X-Blueboat-Request-Id', resp_headers), 2)[1] as blueboat_reqid,
+    req_headers, resp_headers,
     loc.country_name, loc.subdivision_1_name, loc.subdivision_2_name, loc.city_name
   from logstream_requests as req
   left any join geoip.city_locations as loc on loc.geoname_id = dictGetUInt32(
